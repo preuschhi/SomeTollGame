@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     public Transform player;
     public Transform playerGunJoint;
 
+    //Getting Needed Compnents
     void Start()
     {
        rbPlayer = GetComponentInChildren<Rigidbody2D>(); 
@@ -20,44 +21,36 @@ public class Movement : MonoBehaviour
        } 
     }
 
-
+    //Movingspeed of Player
     public float moveSpeed = 10f;
 
-    public Vector2 mousePosition;
+
+    Vector2 mousePosition;
     public float mouseAngle;
     
 
-    
-    // int direction = -90;
-    // bool facingRight = true;
-    // bool facingLeft = true;
-    // bool facingUp = true;
-    // bool facingDown = true;
 
     public float x;
     public float y;
     void FixedUpdate()
     {
-
+        //Getting input for playerMovement
         x = Input.GetAxis("Horizontal");
         y = Input.GetAxis("Vertical");
-
+        //Moving the player
         rbPlayer.velocity = new Vector2(x * moveSpeed, y * moveSpeed);
-        
+       
+        //Rotating the player
         Vector3 movement = new Vector3(x,y,0);
         Quaternion lookRotation = Quaternion.LookRotation(Vector3.forward, movement);
         Vector3 rotation = lookRotation.eulerAngles;
-        
         player.rotation = Quaternion.Euler(0f, 0f, rotation.z);
-
         
 
-      
-
-        
+        //Rotating the shooting pipe
+        //Getting the position of the mouse
         Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        
-        Vector2 screenPoint = Camera.main.WorldToScreenPoint(playerGunJoint.localPosition);
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(playerGunJoint.position);
         Vector2 offset = new Vector2(mousePosition.x - screenPoint.x, mousePosition.y - screenPoint.y);
         mouseAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
     
